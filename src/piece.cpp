@@ -79,7 +79,7 @@ SDL_Texture * Piece::getTexture(SDL_Renderer* renderer){
     return texture;
 }
 
-void Piece::drawPiece(SDL_Renderer* renderer, int boardTopLeftX, int boardTopLeftY){
+void Piece::drawPiece(SDL_Renderer* renderer, int boardTopLeftX, int boardTopLeftY,int sq){
     int w, h;
     SDL_Rect fromRect, toRect;
 
@@ -90,8 +90,8 @@ void Piece::drawPiece(SDL_Renderer* renderer, int boardTopLeftX, int boardTopLef
     fromRect.h = h;
     fromRect.x = fromRect.y = 0;
 
-    toRect.h = SQUARE_SIZE;
-    toRect.w = SQUARE_SIZE;
+    toRect.h = sq;
+    toRect.w = sq;
     toRect.x = boardTopLeftX + x - (w/2);
     toRect.y = boardTopLeftY + y - (h/2);
 

@@ -9,16 +9,20 @@
 
 class Game{
 public:
-    Piece selected;
+    Piece* selected;
     string turn; //BLACK or RED
-    Board board;
+    Board* board;
+    SDL_Renderer* renderer;
+    Piece* validMoves[ROWS][COLS][NB_PIECE];
 
-    Game();
+    Game(SDL_Renderer* Renderer);
     void update();
+    void initValidMoves(Piece* move[ROWS][COLS][NB_PIECE]);
     string getWinner();
-    bool selectPiece(int col, int row);
-    bool move(int, int);
-    void drawValidMoves(unordered_map<Piece, int *>);
+    bool selectPiece(int row, int col);
+    bool move(int row, int col);
+    void drawValidMoves(Piece* validMoves[ROWS][COLS][NB_PIECE]);
+    bool isValid(int row, int col);
     void changeTurn();
     void undoLastMove();//to specify
     void saveGame();//to specify

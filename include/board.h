@@ -32,11 +32,11 @@ public:
     void remove(Piece piece);
     Piece getPiece(int row, int col);
     string getWinner();
-    void getValidMove(Piece moves[ROWS][COLS], Piece piece);
+    void getValidMove(Piece* moves[ROWS][COLS][NB_PIECE], Piece piece);
     //void eatLeft(vector<Piece> moves[ROWS][COLS], int start, int stop, int step, string color, int left);
     //void eatLeft(unordered_map<int *, bool> moves,int start, int stop, int step, string color, int left, Piece skipped);
-    void eatLeft(Piece moves[ROWS][COLS],int start, int stop, int step, string color, int left, Piece skipped);
-    void eatRight(Piece moves[ROWS][COLS],int start, int stop, int step, string color, int right, Piece skipped);
+    void eatLeft(Piece* moves[ROWS][COLS][NB_PIECE],int start, int stop, int step, string color, int left, Piece skipped);
+    void eatRight(Piece* moves[ROWS][COLS][NB_PIECE],int start, int stop, int step, string color, int right, Piece skipped);
     //void eatRight(unordered_map<int *, bool> moves, int start, int stop, int step, string color, int right, Piece skipped);
     //unordered_map<Piece, int *> eatRight(int start, int stop, int step, string color, int dir, int * skipped);
 };
