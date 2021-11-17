@@ -1,4 +1,7 @@
 #include "../include/board.h"
+#define max(x,y) (((x) >= (y)) ? (x) : (y))
+#define min(x,y) (((x) <= (y)) ? (x) : (y))
+
 
 Board::Board(){
     blackLeft = redLeft = 12;
@@ -33,7 +36,11 @@ void Board::initializeVirtualBoard(){
                     virtualBoard[row][col] = Piece(row, col, "red");
                 }else if(row > 4){
                     virtualBoard[row][col] = Piece(row, col, "black");
+                }else{
+                    virtualBoard[row][col].clear();
                 }
+            }else{
+                virtualBoard[row][col].clear();
             }
         }
     }
@@ -87,5 +94,112 @@ string Board::getWinner(){
         return "red";
     }else if(blackLeft <= 0){
         return "black";
+    }
+}
+
+void Board::getValidMove(Piece moves[ROWS][COLS], Piece piece){
+    
+    Piece skipped;
+    int left = piece.col -1;
+    int right = piece.col +1;
+    int row = piece.row;
+    
+    skipped.clear();
+    if (piece.color == "black"){
+        eatLeft(moves, row-1, max((row-3),-1), -1, piece.color, left, skipped);
+        eatRight(moves, row-1, max((row-3),-1), -1, piece.color, right, skipped);
+    }else if(piece.color == "red"){
+        eatLeft(moves, row+1, min((row+3),ROWS), 1, piece.color, left, skipped);
+        eatRight(moves, row+1, min((row+3),ROWS), 1, piece.color, right, skipped);
+    }
+}
+
+void Board::eatLeft(Piece moves[ROWS][COLS],int start, int stop, int step, string color, int left, Piece skipped)
+{
+    Piece last;
+    Piece current;
+    int row;
+
+    for (int r=start; r<stop; r+=step){
+        
+        if (left<0){//next to the edge
+            break;
+        }
+
+        current = virtualBoard[r][left];
+        if (current.color == ""){//empty tile
+            if (skipped.color != "" && last.color==""){
+                break;
+            }else if(skipped.color != ""){
+                moves[r][left] = skipped;//maybe to modify
+            }else{
+                moves[r][left] = last;
+            }
+
+            if (last.color != ""){
+                if (step == -1){
+                    row = max((r-3),0);
+                }else{
+                    row = min((r+3),ROWS);
+                }
+
+                eatLeft(moves, r+step, row, step, color, left-1, skipped=last);
+                eatRight(moves, r+step, row, step, color, left+1, skipped=last);
+            }
+            break;
+        }
+        else if (current.color == color){//ally color
+            break;
+        }
+        else{//opponent color
+            last=current;
+        }
+
+        left -= 1;
+    }
+}
+
+void Board::eatLeft(Piece moves[ROWS][COLS],int start, int stop, int step, string color, int right, Piece skipped)
+{
+    Piece last;
+    Piece current;
+    int row;
+    
+    for (int r=start; r<stop; r+=step){
+        
+        if (right>=COLS){//next to the edge
+            break;
+        }
+
+        current = virtualBoard[r][right];
+        if (current.color == ""){//empty tile
+            if (skipped.color != "" && last.color==""){
+                break;
+            }else if(skipped.color != ""){
+                moves[{r,right}] = skipped;
+            }else{
+                moves[{r,right}] = last;
+            }
+
+            if (last.color != ""){
+                if (step == -1){
+                    row = max((r-3),0);
+                }else{
+                    row = min((r+3),ROWS);
+                }
+
+                eatLeft(moves, r+step, row, step, color, right-1, skipped=last);
+                eatRight(moves, r+step, row, step, color, right+1, skipped=last);
+            }
+            break;
+        }
+        else if (current.color == color){//ally color
+            break;
+        }
+        else{//opponent color
+            last=current;
+        }
+
+        right += 1;
     }
 }

@@ -13,6 +13,7 @@ public:
     string turn; //BLACK or RED
     Board board;
 
+    Game();
     void update();
     string getWinner();
     bool selectPiece(int col, int row);
