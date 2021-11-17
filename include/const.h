@@ -1,0 +1,7 @@
+#define WIN_WIDTH  800
+#define WIN_HEIGHT 800
+#define ROWS       8
+#define COLS       8
+#define SQUARE_SIZE WIN_WIDTH/ROWS
+#define BOARD_BLACK_COLOR {0,0,0,255}
+#define BOARD_WHITE_COLOR{255,255,255,255}

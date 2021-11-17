@@ -10,13 +10,13 @@
 class Game{
 public:
     Piece selected;
-    string turn; //BLACK or WHITE
+    string turn; //BLACK or RED
     Board board;
 
     void update();
     string getWinner();
-    void selectPiece(int col, int row);
-    void move(int, int);
+    bool selectPiece(int col, int row);
+    bool move(int, int);
     void drawValidMoves(unordered_map<Piece, int *>);
     void changeTurn();
     void undoLastMove();//to specify

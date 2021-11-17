@@ -5,6 +5,23 @@
 #include <stdlib.h>
 #include <iostream>
 #include <string>
+#include "const.h"
+
+#ifdef _WIN32
+    #include <SDL.h>
+    #include <SDL_image.h>
+#endif
+
+#ifdef __APPLE__
+    #include <SDL2/SDL.h>
+    #include <SDL2_image/SDL_image.h>
+#endif
+
+#ifdef __linux
+    #include <SDL2/SDL.h>
+    #include <SDL2/SDL_image.h>
+#endif
+
 
 using std::string;
 
@@ -14,12 +31,15 @@ public:
     int x, y; // position on the screen
     string color;
     bool king;
-    Piece(int, int, string);
-    void getPosition();
+    Piece();
+    Piece(int Row, int Col, string Color);
+    void clear();
+    void setVirtualPosition();
     void setKing();
     bool getKing();
-    void move(int x, int y);
-    void drawPiece();
+    void move(int Row, int Col);
+    SDL_Texture* getTexture(SDL_Renderer* renderer);
+    void drawPiece(SDL_Renderer* renderer, int boardTopLeftX, int boardTopLeftY);
 };
 
 

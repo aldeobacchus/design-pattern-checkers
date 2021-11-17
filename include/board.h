@@ -15,13 +15,16 @@ using std::unordered_map;
 class Board{
 public:
     vector<vector<Piece>> virtualBoard;//virtual matrix containing the piece, this is the real board
-    int blackLeft, whiteLeft;
-    int blackKings, whiteKings;
+    int blackLeft, redLeft;
+    int blackKings, redKings;
+    int boardTopLeftX;
+    int boardTopLeftY;
     unordered_map<Piece, int *> movesList;//this is the list of all the possibles moves <piece, list pos[2] with the position of the move>
-    
+
+
     Board();
-    void drawChecker();
-    void initializeBoard();
+    void drawChecker(SDL_Renderer* renderer);
+    void initializeVirtualBoard();
     void drawGame();
     void move(Piece, int row, int col);
     void remove(Piece);
