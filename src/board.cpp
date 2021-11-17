@@ -97,8 +97,8 @@ string Board::getWinner(){
     }
 }
 
-void Board::getValidMove(Piece* moves[ROWS][COLS][NB_PIECE], Piece piece){
-    
+void Board::getValidMove(Piece* moves[ROWS][COLS][NB_PIECE], Piece piece)
+{    
     Piece skipped;
     int left = piece.col -1;
     int right = piece.col +1;

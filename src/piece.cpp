@@ -2,12 +2,12 @@
 
 
 Piece::Piece(){
-    row = NULL;
-    col = NULL;
+    row = 0;
+    col = 0;
     color.clear();
     king = NULL;
-    x = NULL;
-    y = NULL;
+    x = 0;
+    y = 0;
 }
 
 
@@ -22,12 +22,12 @@ Piece::Piece(int Row, int Col, string Color){
 }
 
 void Piece::clear(){
-    row = NULL;
-    col = NULL;
+    row = 0;
+    col = 0;
     color.clear();
     king = NULL;
-    x = NULL;
-    y = NULL;
+    x = 0;
+    y = 0;
 }
 
 void Piece::setVirtualPosition(){
