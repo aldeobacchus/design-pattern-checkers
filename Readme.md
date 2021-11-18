@@ -8,4 +8,3 @@ use : `g++ *.cpp -std=c++11 -Wall -o Checkers -lSDL2 -lSDL2_image` in the `Check
 
 ## Project info
 The project unfortunately did not  have the time to be debugged and we therefore have a segmentation fault when choosing a piece.
-However design pattern were used.
