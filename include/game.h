@@ -13,15 +13,18 @@ public:
     string turn; //BLACK or RED
     Board* board;
     SDL_Renderer* renderer;
-    Piece* validMoves[ROWS][COLS][NB_PIECE];
+    //Piece* validMoves[ROWS][COLS][NB_PIECE];
+    Piece* validMoves[ ROWS * COLS * NB_PIECE]; 
 
     Game(SDL_Renderer* Renderer);
+    void init();
     void update();
-    void initValidMoves(Piece* move[ROWS][COLS][NB_PIECE]);
+    void initValidMoves(Piece* validMoves[ ROWS * COLS * NB_PIECE]);
     string getWinner();
+    int offset(int x, int y, int z);
     bool selectPiece(int row, int col);
     bool move(int row, int col);
-    void drawValidMoves(Piece* validMoves[ROWS][COLS][NB_PIECE]);
+    void drawValidMoves(Piece* validMoves[ ROWS * COLS * NB_PIECE]);
     bool isValid(int row, int col);
     void changeTurn();
     void undoLastMove();//to specify

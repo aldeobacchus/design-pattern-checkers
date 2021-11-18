@@ -38,7 +38,7 @@ public:
     void setKing();
     bool getKing();
     void move(int Row, int Col);
-    SDL_Texture* getTexture(SDL_Renderer* renderer);
+    SDL_Texture* getTexture(SDL_Renderer* renderer, int sq);
     void drawPiece(SDL_Renderer* renderer, int boardTopLeftX, int boardTopLeftY,int sq);
 };
 

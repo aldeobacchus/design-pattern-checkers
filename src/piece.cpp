@@ -31,8 +31,8 @@ void Piece::clear(){
 }
 
 void Piece::setVirtualPosition(){
-    x = SQUARE_SIZE * col + SQUARE_SIZE/2;
-    y = SQUARE_SIZE * row + SQUARE_SIZE/2;
+    x = (SQUARE_SIZE) * col + (SQUARE_SIZE)/2;
+    y = (SQUARE_SIZE) * row + (SQUARE_SIZE)/2;
 }
 
 void Piece::setKing(){
@@ -49,7 +49,7 @@ void Piece::move (int Row, int Col){
     setVirtualPosition();
 }
 
-SDL_Texture * Piece::getTexture(SDL_Renderer* renderer){
+SDL_Texture * Piece::getTexture(SDL_Renderer* renderer, int sq){
     //if black 
         //if king -> return blaclKing texture
         //else -> return black texture
@@ -58,23 +58,44 @@ SDL_Texture * Piece::getTexture(SDL_Renderer* renderer){
         //else -> return reed texture
     SDL_Texture* texture;
     SDL_Surface* surface;
+
+    
+    if (sq == (SQUARE_SIZE)/4){
+                std::cout<<"color :\n"<<color<<"\n";
+    }
+
     if (color == "black"){
+        if (sq == (SQUARE_SIZE)/4){
+                std::cout<<"Texturing...\n";
+            }
         if (king == true){
             surface = IMG_Load("../data/blackKing.png");
             texture = SDL_CreateTextureFromSurface(renderer, surface);
+            
         }else{
             surface = IMG_Load("../data/black.png");
             texture = SDL_CreateTextureFromSurface(renderer, surface);
+            
         }
     }else if (color == "red"){
+        if (sq == (SQUARE_SIZE)/4){
+                std::cout<<"Texturing...\n";
+            }
         if (king == true){
             surface = IMG_Load("../data/redKing.png");
             texture = SDL_CreateTextureFromSurface(renderer, surface);
+            
         }else{
             surface = IMG_Load("../data/red.png");
             texture = SDL_CreateTextureFromSurface(renderer, surface);
+            
+        }
+    }else{
+        if (sq == (SQUARE_SIZE)/4){
+                std::cout<<"Teeeexturing...\n";
         }
     }
+    
     SDL_FreeSurface(surface);
     return texture;
 }
@@ -82,8 +103,9 @@ SDL_Texture * Piece::getTexture(SDL_Renderer* renderer){
 void Piece::drawPiece(SDL_Renderer* renderer, int boardTopLeftX, int boardTopLeftY,int sq){
     int w, h;
     SDL_Rect fromRect, toRect;
-
-    SDL_Texture* texture = getTexture(renderer);
+    
+    SDL_Texture* texture = getTexture(renderer, sq);
+    
     SDL_QueryTexture(texture, NULL, NULL, &w, &h);
     
     fromRect.w = w;
@@ -94,6 +116,6 @@ void Piece::drawPiece(SDL_Renderer* renderer, int boardTopLeftX, int boardTopLef
     toRect.w = sq;
     toRect.x = boardTopLeftX + x - (w/2);
     toRect.y = boardTopLeftY + y - (h/2);
-
+    
     SDL_RenderCopy(renderer, texture, &fromRect, &toRect);
 }

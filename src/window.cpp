@@ -1,5 +1,4 @@
 #include "../include/window.h"
-#include "SDL_image.h"
 #include <iostream>
 
 
@@ -20,7 +19,7 @@ void Window::update(float  deltaTime) {
 	game->update();
 }
 */
-void Window::handleEvents() {
+int Window::handleEvents() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
     int x, y;
@@ -43,25 +42,31 @@ void Window::handleEvents() {
 	//	break;
 	case SDL_MOUSEBUTTONDOWN:
         SDL_GetMouseState(&x, &y);
-        if (x < game->board->boardTopLeftX || x > game->board->boardTopLeftX + (COLS * SQUARE_SIZE)) {
+        if (x < game->board->boardTopLeftX || x > game->board->boardTopLeftX + (COLS * (SQUARE_SIZE))) {
 
 		}
-		else if (y < game->board->boardTopLeftY || y > game->board->boardTopLeftY + (ROWS * SQUARE_SIZE)) {
+		else if (y < game->board->boardTopLeftY || y > game->board->boardTopLeftY + (ROWS * (SQUARE_SIZE))) {
 
 		}
 		else {
 			
-            row = y / SQUARE_SIZE;
-            col = x / SQUARE_SIZE;
+            row = y / (SQUARE_SIZE);
+            col = x / (SQUARE_SIZE);
+			std::cout<<"mouse x :"<<row<<" mouse y :"<<col<<"\n";
+			std::cout<<"select piece pending\n";
     		game->selectPiece(row,col);
+			std::cout<<"select piece done\n";
 	
 		}
-		
+		return 1;
 		break;
 	//case SDL_MOUSEBUTTONUP:
 	//	//game.handleMouseUp(event.button);
 	//	break;
 	}
+	return 0;
+	std::cout<<"exiting handle\n";
+
 }
 
 /* A REVOIR
@@ -162,7 +167,8 @@ void Window::init(const char* title, int xpos, int ypos, bool fullscreen) {
 			isRunning = true;
 
 			game = new Game(renderer);
-			//game->init();
+
+			game->init();
 
 		}
 		

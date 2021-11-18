@@ -1,5 +1,4 @@
 #pragma once
-#include "SDL.h"
 
 #undef main
 
@@ -10,7 +9,7 @@ class Window
 {
 public:
 	void update(float deltaTime);
-	void handleEvents();
+	int handleEvents();
 	void clean();
 	void render();
 	bool running();

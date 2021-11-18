@@ -18,10 +18,10 @@ void Board::drawChecker(SDL_Renderer* renderer){
         for (int j=0; j < COLS; ++j){
             SDL_Color currentColor = (i+j) % 2 == 0 ? white : black;
             SDL_Rect outline;
-            outline.w = SQUARE_SIZE;
-            outline.h = SQUARE_SIZE;
-            outline.x = boardTopLeftX + i*SQUARE_SIZE;
-            outline.y = boardTopLeftY + j*SQUARE_SIZE;
+            outline.w = (SQUARE_SIZE);
+            outline.h = (SQUARE_SIZE);
+            outline.x = boardTopLeftX + i*(SQUARE_SIZE);
+            outline.y = boardTopLeftY + j*(SQUARE_SIZE);
             SDL_SetRenderDrawColor(renderer, currentColor.r, currentColor.g, currentColor.b, currentColor.a);
             SDL_RenderFillRect(renderer, &outline);
         }
@@ -29,8 +29,9 @@ void Board::drawChecker(SDL_Renderer* renderer){
 }
 
 void Board::initializeVirtualBoard(){
-    for (int row; row < ROWS; row++){
-        for (int col; col < COLS; col++){
+    std::cout<<"initializing VBoard\n";
+    for (int row=0; row < ROWS; row++){
+        for (int col=0; col < COLS; col++){
             if (col % 2 == ((row+1) % 2)){
                 if (row < 3){
                     virtualBoard[row][col] = Piece(row, col, "red");
@@ -44,18 +45,23 @@ void Board::initializeVirtualBoard(){
             }
         }
     }
+
 }
 
 void Board::drawGame(SDL_Renderer* renderer){
+    int row;
+    int col;
     drawChecker(renderer);
-    for (int row; row < ROWS; row++){
-        for (int col; col < COLS; col++){
-            Piece piece = virtualBoard[row][col];
-            if (piece.color == "red" || piece.color == "black"){
-                piece.drawPiece(renderer, boardTopLeftX, boardTopLeftY,SQUARE_SIZE);
+    for (row=0; row < ROWS; row++){
+        for (col=0; col < COLS; col++){
+            
+            if (virtualBoard[row][col].color == "red" || virtualBoard[row][col].color == "black"){
+                virtualBoard[row][col].drawPiece(renderer, boardTopLeftX, boardTopLeftY,(SQUARE_SIZE));
+
             }
         }
     }
+
 }
 
 void Board::move(Piece piece, int row, int col){
@@ -94,16 +100,22 @@ string Board::getWinner(){
         return "red";
     }else if(blackLeft <= 0){
         return "black";
+    }else{
+        return "";
     }
 }
 
-void Board::getValidMove(Piece* moves[ROWS][COLS][NB_PIECE], Piece piece)
+int Board::offset(int x, int y, int z){
+    return (z*ROWS*COLS)+(y*ROWS)+x;
+}
+
+void Board::getValidMove(Piece* moves[ ROWS * COLS * NB_PIECE], Piece piece)
 {    
     Piece skipped;
     int left = piece.col -1;
     int right = piece.col +1;
     int row = piece.row;
-    
+    std::cout<<"Get valid moves from ["<<piece.row<<":"<<piece.col<<"]{"<<piece.color<<"}\n";
     skipped.clear();
     if (piece.color == "black"){
         eatLeft(moves, row-1, max((row-3),-1), -1, piece.color, left, skipped);
@@ -112,14 +124,16 @@ void Board::getValidMove(Piece* moves[ROWS][COLS][NB_PIECE], Piece piece)
         eatLeft(moves, row+1, min((row+3),ROWS), 1, piece.color, left, skipped);
         eatRight(moves, row+1, min((row+3),ROWS), 1, piece.color, right, skipped);
     }
+
 }
 
-void Board::eatLeft(Piece* moves[ROWS][COLS][NB_PIECE],int start, int stop, int step, string color, int left, Piece skipped)
+void Board::eatLeft(Piece* moves[ ROWS * COLS * NB_PIECE], int start, int stop, int step, string color, int left, Piece skipped)
 {
     Piece last;
     Piece current;
     int row;
     static int nbskipped = 0;
+    int off;
 
     for (int r=start; r<stop; r+=step){
         
@@ -128,13 +142,14 @@ void Board::eatLeft(Piece* moves[ROWS][COLS][NB_PIECE],int start, int stop, int 
         }
 
         current = virtualBoard[r][left];
+        off=offset(r,left,nbskipped);
         if (current.color == ""){//empty tile
             if (skipped.color != "" && last.color==""){
                 break;
             }else if(skipped.color != ""){
-                (*moves)[r][left][nbskipped] = skipped;//maybe to modify
+                (*moves)[off] = skipped;//maybe to modify
             }else{
-                (*moves)[r][left][nbskipped] = last;
+                (*moves)[off] = last;
             }
 
             if (last.color != ""){
@@ -160,12 +175,13 @@ void Board::eatLeft(Piece* moves[ROWS][COLS][NB_PIECE],int start, int stop, int 
     }
 }
 
-void Board::eatLeft(Piece* moves[ROWS][COLS][NB_PIECE],int start, int stop, int step, string color, int right, Piece skipped)
+void Board::eatRight(Piece* moves[ ROWS * COLS * NB_PIECE],int start, int stop, int step, string color, int right, Piece skipped)
 {
     Piece last;
     Piece current;
     int row;
     static int nbskipped =0;
+    int off;
     for (int r=start; r<stop; r+=step){
         
         if (right>=COLS){//next to the edge
@@ -173,13 +189,14 @@ void Board::eatLeft(Piece* moves[ROWS][COLS][NB_PIECE],int start, int stop, int 
         }
 
         current = virtualBoard[r][right];
+        off=offset(r,right,nbskipped);
         if (current.color == ""){//empty tile
             if (skipped.color != "" && last.color==""){
                 break;
             }else if(skipped.color != ""){
-                (*moves)[r][right][nbskipped] = skipped;
+                (*moves)[off] = skipped;
             }else{
-                (*moves)[r][right][nbskipped] = last;
+                (*moves)[off] = last;
             }
 
             if (last.color != ""){

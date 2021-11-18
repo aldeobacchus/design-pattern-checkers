@@ -14,7 +14,7 @@ CC = g++
 CFLAGS = -std=c++11
 
 # Options to link
-LFLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf
+LFLAGS = -lSDL2 -lSDL2_image
 
 # Finds all cpp files in project directory
 # Format: src/.cpp
