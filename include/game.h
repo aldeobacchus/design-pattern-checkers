@@ -11,9 +11,8 @@ class Game{
 public:
     Piece* selected;
     string turn; //BLACK or RED
-    Board* board;
+    //Board* board;
     SDL_Renderer* renderer;
-    //Piece* validMoves[ROWS][COLS][NB_PIECE];
     Piece* validMoves[ ROWS * COLS * NB_PIECE]; 
 
     Game(SDL_Renderer* Renderer);

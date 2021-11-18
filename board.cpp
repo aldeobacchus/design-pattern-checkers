@@ -1,14 +1,77 @@
-#include "../include/board.h"
+#include "./include/board.h"
 #define max(x,y) (((x) >= (y)) ? (x) : (y))
 #define min(x,y) (((x) <= (y)) ? (x) : (y))
+/*
+
+//Didn't had the time to finish the implementation of Observer
+
+class EventManager
+{
+private:
+    vector<ObserverInterface*> observers;
+public:
+    virtual ~EventManager() {}
+
+    void attach(ObserverInterface *observer){
+        observers.push_back(observer);
+    }
+
+    void detach(const int index){
+        observers.erase( observers.begin() +index);
+    }
+
+    void notify(){
+        for (unsigned int i =0; i < observers.size(); i++){
+            observers.at(i)->update(this);
+        }
+    }
+
+};
+
+class ObserverInterface
+{
+public:
+    virtual ~ObserverInterface() {}
+    virtual void update(EventManager* event);
+};
 
 
+class WinnerObserver : public ObserverInterface
+{private:
+    int watchRedLeft;
+    int watchBlackLeft;
+public:
+    WinnerObserver(int a, int b): watchRedLeft(a), watchBlackLeft(b){}
+
+    int getRed(){
+        return watchRedLeft;
+    }
+    int getBlack(){
+        return watchBlackLeft;
+    }
+
+    void update(EventManager* event){
+        //what will append when someone win
+    }
+};
+*/
 Board::Board(){
     blackLeft = redLeft = 12;
     blackKings = redKings = 0;
     boardTopLeftX = boardTopLeftY = 0;//usefull later, if we want to resize the win, maybe should move this to main later
     initializeVirtualBoard();
 }
+
+Board* Board::instance=nullptr;
+
+
+Board* Board::getInstance(){
+    if(!instance){
+        instance = new Board();
+    }
+    return instance;
+}
+
 
 void Board::drawChecker(SDL_Renderer* renderer){
     SDL_Color white = BOARD_WHITE_COLOR;

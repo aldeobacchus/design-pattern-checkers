@@ -13,18 +13,28 @@ using std::vector;
 using std::unordered_map;
 using std::tuple;
 
+//class EventManager;
+//class ObserverInterface;
+//class WinnerObserver{}
+
 class Board{
+private:
+    //Singleton
+    Board();
+    static Board *instance;
 public:
-    //vector<vector<Piece>> virtualBoard;//virtual matrix containing the piece, this is the real board
     Piece virtualBoard[ROWS][COLS];
-    int blackLeft, redLeft;
     int blackKings, redKings;
     int boardTopLeftX;
     int boardTopLeftY;
-    //Piece movesList[ROWS][COLS];//matrix of all the possibles moves
+    int blackLeft, redLeft;
 
 
-    Board();
+
+    //Board();
+    static Board* getInstance();
+    Board( Board const& ) = delete;
+    Board& operator = ( Board const& ) = delete;
     void drawChecker(SDL_Renderer* renderer);
     void initializeVirtualBoard();
     void drawGame(SDL_Renderer* renderer);
@@ -34,13 +44,9 @@ public:
     string getWinner();
     int offset(int x, int y, int z);
     void getValidMove(Piece* moves[ ROWS * COLS * NB_PIECE], Piece piece);
-    //void eatLeft(vector<Piece> moves[ROWS][COLS], int start, int stop, int step, string color, int left);
-    //void eatLeft(unordered_map<int *, bool> moves,int start, int stop, int step, string color, int left, Piece skipped);
     void eatLeft(Piece* moves[ ROWS * COLS * NB_PIECE],int start, int stop, int step, string color, int left, Piece skipped);
     void eatRight(Piece* moves[ ROWS * COLS * NB_PIECE],int start, int stop, int step, string color, int right, Piece skipped);
-    //void eatRight(unordered_map<int *, bool> moves, int start, int stop, int step, string color, int right, Piece skipped);
-    //unordered_map<Piece, int *> eatRight(int start, int stop, int step, string color, int dir, int * skipped);
-};
+    };
 
 
 

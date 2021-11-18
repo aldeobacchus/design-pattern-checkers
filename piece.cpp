@@ -1,4 +1,4 @@
-#include "../include/piece.h"
+#include "./include/piece.h"
 
 
 Piece::Piece(){
@@ -65,35 +65,29 @@ SDL_Texture * Piece::getTexture(SDL_Renderer* renderer, int sq){
     }
 
     if (color == "black"){
-        if (sq == (SQUARE_SIZE)/4){
-                std::cout<<"Texturing...\n";
-            }
+        
         if (king == true){
-            surface = IMG_Load("../data/blackKing.png");
+            surface = IMG_Load("./data/blackKing.png");
             texture = SDL_CreateTextureFromSurface(renderer, surface);
             
         }else{
-            surface = IMG_Load("../data/black.png");
+            surface = IMG_Load("./data/black.png");
             texture = SDL_CreateTextureFromSurface(renderer, surface);
             
         }
     }else if (color == "red"){
-        if (sq == (SQUARE_SIZE)/4){
-                std::cout<<"Texturing...\n";
-            }
+    
         if (king == true){
-            surface = IMG_Load("../data/redKing.png");
+            surface = IMG_Load("./data/redKing.png");
             texture = SDL_CreateTextureFromSurface(renderer, surface);
             
         }else{
-            surface = IMG_Load("../data/red.png");
+            surface = IMG_Load("./data/red.png");
             texture = SDL_CreateTextureFromSurface(renderer, surface);
             
         }
     }else{
-        if (sq == (SQUARE_SIZE)/4){
-                std::cout<<"Teeeexturing...\n";
-        }
+        
     }
     
     SDL_FreeSurface(surface);

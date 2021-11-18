@@ -1,9 +1,8 @@
-#include "../include/game.h"
+#include "./include/game.h"
 
 Game::Game(SDL_Renderer* Renderer){
     renderer = Renderer;
     selected = NULL;
-    board = new Board();
     turn = "black";
      
     initValidMoves(validMoves);
@@ -12,22 +11,20 @@ Game::Game(SDL_Renderer* Renderer){
 void Game::init(){
     SDL_SetRenderDrawColor(renderer, BACKGROUND_R, BACKGROUND_G, BACKGROUND_B, 255);
     SDL_RenderClear(renderer);
-    board->drawGame(renderer);
+    Board::getInstance()->drawGame(renderer);
     SDL_RenderPresent(renderer);
 }
 
 void Game::update(){
     SDL_SetRenderDrawColor(renderer, BACKGROUND_R, BACKGROUND_G, BACKGROUND_B, 255);
     SDL_RenderClear(renderer);
-    board->drawGame(renderer);
-    std::cout<<"drawGame Done\n";
+    Board::getInstance()->drawGame(renderer);
     drawValidMoves(validMoves);
-    std::cout<<"drawValidMoves Done\n";
     SDL_RenderPresent(renderer);
 }
 
 string Game::getWinner(){
-    return board->getWinner();
+    return Board::getInstance()->getWinner();
 }
 
 int Game::offset(int x, int y, int z){
@@ -36,7 +33,7 @@ int Game::offset(int x, int y, int z){
 bool Game::selectPiece(int row, int col){
     Piece piece;
     bool result;
-    std::cout<<"Selecting a piece at ["<<row<<":"<<col<<"]\n";
+    //std::cout<<"Selecting a piece at ["<<row<<":"<<col<<"]\n";
     if (selected != NULL){ //if we already have selected something
         result = move(row, col);//trying to move to this new location
         if (!result){//for exemple if there is already something in this new location
@@ -44,12 +41,12 @@ bool Game::selectPiece(int row, int col){
             selectPiece(row, col);
         }
     }
-    piece = board->getPiece(row, col);
+    piece = Board::getInstance()->getPiece(row, col);
     //std::cout<<"Turn : "<<turn<<"selectedColor"<<piece.color<<"\n";
     if (piece.color == turn){
         selected = &piece;
-        std::cout<<"Piece selected\n";
-        board->getValidMove(validMoves,piece);
+        //std::cout<<"Piece selected\n";
+        Board::getInstance()->getValidMove(validMoves,piece);
         return true;
     }
     return false;
@@ -67,18 +64,18 @@ bool Game::isValid(int row, int col){
 }
 
 bool Game::move(int row, int col){
-    Piece piece = board->getPiece(row, col);
+    Piece piece = Board::getInstance()->getPiece(row, col);
     Piece* skipped;
     Piece* toRemove = nullptr;
 
     if ((*selected).color != "" && piece.color == "" && isValid(row, col)){
-        board->move(*selected, row, col);
+        Board::getInstance()->move(*selected, row, col);
         int off=offset(row, col, 0);
         skipped=validMoves[off];
         for (int i=0; i<NB_PIECE;i++){
             if (skipped[i].color == "red" || skipped[i].color == "black"){
-                *toRemove = board->getPiece(skipped->row,skipped->col);
-                board->remove(*toRemove);
+                *toRemove = Board::getInstance()->getPiece(skipped->row,skipped->col);
+                Board::getInstance()->remove(*toRemove);
             }
         }
         changeTurn();
@@ -93,10 +90,10 @@ void Game::initValidMoves(Piece* moves[ ROWS * COLS * NB_PIECE]){
 
     for (int r=0;r<ROWS;r++){
         for (int c=0;c<COLS;c++){
-            for(int n=0;n>NB_PIECE;n++){
+            for(int n=0;n>NB_PIECE;n++){//segfault here
                 off=offset(r,c,n);
                 validMoves[off]=nullptr;
-                std::cout<<"validmove init\n";
+                //std::cout<<"validmove init\n";
             }
         }
     }
@@ -125,7 +122,7 @@ void Game::drawValidMoves(Piece* validMoves[ ROWS * COLS * NB_PIECE]){
                     std::cout<<"Drawing valid moves  COLOR : ";
                     std::cout<<validMoves[off]->color<<"\n";
                     std::cout<<"r:"<<r<<" c :"<<c<<" n:"<<n<<"\n";
-                    validMoves[off]->drawPiece(renderer,board->boardTopLeftX, board->boardTopLeftY,(SQUARE_SIZE)/4);
+                    validMoves[off]->drawPiece(renderer,Board::getInstance()->boardTopLeftX, Board::getInstance()->boardTopLeftY,(SQUARE_SIZE)/4);
                     
                 }
             }

@@ -1,4 +1,4 @@
-#include "../include/window.h"
+#include "./include/window.h"
 #include <iostream>
 
 
@@ -42,10 +42,10 @@ int Window::handleEvents() {
 	//	break;
 	case SDL_MOUSEBUTTONDOWN:
         SDL_GetMouseState(&x, &y);
-        if (x < game->board->boardTopLeftX || x > game->board->boardTopLeftX + (COLS * (SQUARE_SIZE))) {
+        if (x < Board::getInstance()->boardTopLeftX || x > Board::getInstance()->boardTopLeftX + (COLS * (SQUARE_SIZE))) {
 
 		}
-		else if (y < game->board->boardTopLeftY || y > game->board->boardTopLeftY + (ROWS * (SQUARE_SIZE))) {
+		else if (y < Board::getInstance()->boardTopLeftY || y > Board::getInstance()->boardTopLeftY + (ROWS * (SQUARE_SIZE))) {
 
 		}
 		else {
