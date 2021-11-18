@@ -106,10 +106,10 @@ void Piece::drawPiece(SDL_Renderer* renderer, int boardTopLeftX, int boardTopLef
     fromRect.h = h;
     fromRect.x = fromRect.y = 0;
 
-    toRect.h = sq;
-    toRect.w = sq;
-    toRect.x = boardTopLeftX + x - (w/2);
-    toRect.y = boardTopLeftY + y - (h/2);
+    toRect.h = 0.8*sq;
+    toRect.w = 0.8*sq;
+    toRect.x =  x - (w/2);
+    toRect.y =  y - (h/2);
     
     SDL_RenderCopy(renderer, texture, &fromRect, &toRect);
 }
